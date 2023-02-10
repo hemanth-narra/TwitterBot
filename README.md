@@ -22,10 +22,16 @@ These steps will guide you to deploy the bot on an Ubuntu VPS
 `sudo apt-get install python3 python3-pip`
 ### Installing
 
-1. Clone the repository
+3. Clone the repository
+`https://github.com/hemanth-narra/TwitterBot.git`
 
+4. Install the required packages
+`pip3 install -r requirements.txt`
 
+5. Edit sample_config.py with your values and save as config.py
 
+6. Finally run the bot
+`python3 bot.py`
 
 
 ## Built With
