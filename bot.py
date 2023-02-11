@@ -37,4 +37,5 @@ async def handle_twitter_url(app, message):
         logging.error(e)
         await message.reply_text(f'Unable to find the video for {message.text}')
 
-app.run()
+if __name__=="__main__":
+    app.run()
