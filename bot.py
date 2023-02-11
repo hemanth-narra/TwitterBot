@@ -1,6 +1,6 @@
 import config
 import youtube_dl
-from pyrogram import Client, filters
+from pyrogram import Client, filters, enums
 import os
 import logging
 
@@ -21,6 +21,7 @@ async def handle_twitter_url(app, message):
     try:
         logging.info(f'got the url: {message.text}')
         tweet_url = message.text
+        await app.send_chat_action(chat_id=message.chat.id, action=enums.ChatAction.TYPING)
         ydl_opts = {
             'outtmpl': 'video.%(ext)s',
         }
@@ -28,6 +29,7 @@ async def handle_twitter_url(app, message):
             logging.info("Downloading video using youtube-dl")
             ydl.download([tweet_url])
         logging.info("Sending video to the user")
+        await app.send_chat_action(chat_id=message.chat.id, action=enums.ChatAction.UPLOAD_VIDEO)
         # Send the video to the user
         await message.reply_video("video.mp4")
         logging.info("Deleting video from disk")
