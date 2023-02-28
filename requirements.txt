@@ -2,3 +2,4 @@ selenium
 pyrogram
 tgcrypto
 bs4
+requests
