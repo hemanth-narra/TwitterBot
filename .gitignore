@@ -1,3 +1,5 @@
 config.py
 my_bot.session
 __pycache__
+ok.txt
+.gitignore
