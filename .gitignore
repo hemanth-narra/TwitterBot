@@ -3,3 +3,5 @@ my_bot.session
 __pycache__
 ok.txt
 .gitignore
+geckodriver.log
+twvid.session
