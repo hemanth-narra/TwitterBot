@@ -8,14 +8,27 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pyrogram import Client, filters
+from pyrogram.enums import ChatAction
 import config
 
 # initialize the Pyrogram client
-bot = Client("twvid", int(config.API_ID), config.API_HASH)
+bot = Client("twvid", api_id=int(config.API_ID), api_hash=config.API_HASH, bot_token=config.BOT_TOKEN)
+
+@bot.on_message(filters.command("start"))
+async def start_command(bot, message):
+    # send a welcome message to the user
+    await bot.send_message(
+        chat_id=message.chat.id,
+        text="Hi! I'm a bot that can help you download videos from Twitter. Just send me a Twitter URL and I'll do the rest! Please note that I can only download videos, not photos.",
+        quote=True
+    )
 
 # define a filter to only allow messages containing a Twitter URL
 @bot.on_message(filters.private & filters.regex(r"https?://twitter\.com/.*/status/\d+"))
 async def process_tweet_url(bot, message):
+    # show a chat action while the videos are being processed
+    await bot.send_chat_action(message.chat.id, ChatAction.UPLOAD_VIDEO)
+
     # get the tweet URL from the message
     tweet_url = message.text.strip()
     
@@ -74,7 +87,7 @@ async def process_tweet_url(bot, message):
             await bot.send_video(
                 chat_id=message.chat.id,
                 video=f"video{i+1}.mp4",
-                caption=f"Video {i+1} of {len(video_urls)} from {tweet_url}"
+                caption=f"[Tweet]({tweet_url}) - Video {i+1} of {len(video_urls)}"
             )
 
             # delete the downloaded video file
@@ -95,4 +108,3 @@ async def process_tweet_url(bot, message):
 # start the bot
 if __name__=='__main__':
     bot.run()
-
